@@ -10,11 +10,10 @@ from nose.plugins.attrib import attr
 # project
 from tests.checks.common import AgentCheckTest
 
-
 instance = {
-    'host': 'localhost',
-    'port': 26379,
-    'password': 'datadog-is-devops-best-friend'
+    'teamcity_url': 'localhost',
+    'teamcity_user': 'test',
+    'teamcity_pass': 'supersecret'
 }
 
 
@@ -24,15 +23,14 @@ instance = {
 class TestTeamcity(AgentCheckTest):
     """Basic Test for teamcity integration."""
     CHECK_NAME = 'teamcity'
+    TEAMCITY_CONFIG = {'teamcity_url': 'http://teammcity.local', 'teamcity_user': 'username', 'teamcity_pass': 'supersecret'}
 
     def test_check(self):
-        """
-        Testing Teamcity check.
-        """
-        self.load_check({}, {})
+        self.load_check(self.TEAMCITY_CONFIG, {})
 
         # run your actual tests...
+        self.check.load_config(self.TEAMCITY_CONFIG)
 
-        self.assertTrue(True)
-        # Raises when COVERAGE=true and coverage < 100%
-        self.coverage_report()
+        self.assertEqual('http://teamcity.local', self.check.teamcity_url)
+        self.assertEqual('username', self.check.teamcity_user)
+        self.assertEqual('supersecret', self.check.teamcity_pass)

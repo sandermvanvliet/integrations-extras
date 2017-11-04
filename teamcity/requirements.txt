@@ -1,1 +1,3 @@
-# integration pip requirements
+tests
+nose-for-sneeze
+nose
